@@ -14,7 +14,7 @@ extern int param_port;
 
 /* Hook inserted to be called before each socket call.
  * Note: arguments must match tcp_sendmsg()! */
-static int jtcp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg, size_t size)
+static int jtcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
 {
     struct PIAS_Flow f;	//PIAS flow structure
     struct PIAS_Flow *ptr = NULL;	//pointer to PIAS flow structure
@@ -36,7 +36,7 @@ static int jtcp_sendmsg(struct kiocb *iocb, struct sock *sk, struct msghdr *msg,
         {
             spin_lock_irqsave(&(ptr->lock), flags);
             //First message in this connections
-            if (ptr->info.last_copy_time.tv64 == 0)
+            if (ptr->info.last_copy_time == 0)
             {
                 ptr->info.messages++;
                 if (PIAS_DEBUG_MODE)

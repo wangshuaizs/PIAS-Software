@@ -3,6 +3,7 @@
 
 #include <linux/skbuff.h>
 #include <linux/types.h>
+#include <linux/netfilter.h>
 
 /* Decide priority (DSCP) */
 inline int pias_priority(u32 size);

@@ -24,7 +24,8 @@ static struct nf_hook_ops pias_nf_hook_out;
 static struct nf_hook_ops pias_nf_hook_in;
 
 /* Hook function for outgoing packets */
-static unsigned int pias_hook_func_out(unsigned int hooknum, struct sk_buff *skb, const struct net_device *in, const struct net_device *out, int (*okfn)(struct sk_buff *))
+//static unsigned int pias_hook_func_out(unsigned int hooknum, struct sk_buff *skb, const struct net_device *in, const struct net_device *out, int (*okfn)(struct sk_buff *))
+static unsigned int pias_hook_func_out(void *priv, struct sk_buff *skb, const struct nf_hook_state *state)
 {
     struct iphdr *iph = NULL;  //IP  header structure
     struct tcphdr *tcph = NULL;    //TCP header structure
@@ -38,10 +39,10 @@ static unsigned int pias_hook_func_out(unsigned int hooknum, struct sk_buff *skb
     s64 idle_time = 0;
     ktime_t now = ktime_get();	//get current time
 
-    if (!out)
+    if (!state->out)
         return NF_ACCEPT;
 
-    if (param_dev && strncmp(out->name, param_dev, IFNAMSIZ) != 0)
+    if (param_dev && strncmp(state->out->name, param_dev, IFNAMSIZ) != 0)
         return NF_ACCEPT;
 
 	//Get IP header
@@ -152,7 +153,8 @@ static unsigned int pias_hook_func_out(unsigned int hooknum, struct sk_buff *skb
 }
 
 /* Hook function for incoming packets */
-static unsigned int pias_hook_func_in(unsigned int hooknum, struct sk_buff *skb, const struct net_device *in, const struct net_device *out, int (*okfn)(struct sk_buff *))
+//static unsigned int pias_hook_func_in(unsigned int hooknum, struct sk_buff *skb, const struct net_device *in, const struct net_device *out, int (*okfn)(struct sk_buff *))
+static unsigned int pias_hook_func_in(void *priv, struct sk_buff *skb, const struct nf_hook_state *state)
 {
     struct iphdr *iph = NULL;  //IP  header structure
     struct tcphdr *tcph = NULL;    //TCP header structure
@@ -162,10 +164,10 @@ static unsigned int pias_hook_func_in(unsigned int hooknum, struct sk_buff *skb,
     u16 payload_len = 0;    //TCP payload length
     unsigned long flags;   //variable for save current states of irq
 
-    if (!in)
+    if (!state->in)
         return NF_ACCEPT;
 
-    if (param_dev && strncmp(in->name, param_dev, IFNAMSIZ) != 0)
+    if (param_dev && strncmp(state->in->name, param_dev, IFNAMSIZ) != 0)
         return NF_ACCEPT;
 
     //Get IP header
