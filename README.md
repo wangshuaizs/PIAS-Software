@@ -3,7 +3,7 @@
 The kernel module of PIAS (<strong>P</strong>ractical <strong>I</strong>nformation-<strong>A</strong>gnostic flow <strong>S</strong>cheduling). The kernel module matains the per-flow state (`flow.h` and `flow.c`) and marks packets with different priorities (DSCP) (`network.h` and `network.c`).
 
 ## Compiling
- I have tested this kernel module with Linux kernel 2.6.38.3 and 3.18.11. You need the kernel headers to compile it:  
+ I have tested this kernel module with ~~Linux kernel 2.6.38.3 and 3.18.11~~ Linux kernel 4.10.0. You need the kernel headers to compile it:  
 
 <pre><code>$ cd pias4<br/>
 $ make</code></pre>
